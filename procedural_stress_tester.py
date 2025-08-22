@@ -14,8 +14,14 @@ def log_system_metrics(prefix=""):
     mem = psutil.virtual_memory()
     logging.info(f"{prefix}CPU: {cpu}%, Memory: {mem.percent}% used ({mem.used // (1024*1024)}MB/{mem.total // (1024*1024)}MB)")
 
+def _format_proc_name(prefix, table_ref):
+    if isinstance(table_ref, tuple):
+        schema, table = table_ref
+        return f"{prefix}_{schema}_{table}"
+    return f"{prefix}_{table_ref}"
+
 def call_insert_procedure(conn, table, n):
-    proc_name = f'insert_dummy_{table}'
+    proc_name = _format_proc_name('insert_dummy', table)
     start_time = time.time()
     try:
         with conn.cursor() as cur:
@@ -46,7 +52,7 @@ def stress_test(batch_size):
     logging.info(f"✅ Completed batch of {batch_size} rows. Inserted in {elapsed} seconds.")
 
 def call_delete_procedure(conn, table):
-    proc_name = f'delete_dummy_{table}'
+    proc_name = _format_proc_name('delete_dummy', table)
     with conn.cursor() as cur:
         cur.execute(f"CALL {proc_name}();")
         logging.info(f"✅ Called {proc_name}()")

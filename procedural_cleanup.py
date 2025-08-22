@@ -6,8 +6,14 @@ from procedure_generator import get_all_tables, get_related_tables
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
 
+def _format_proc_name(prefix, table_ref):
+    if isinstance(table_ref, tuple):
+        schema, table = table_ref
+        return f"{prefix}_{schema}_{table}"
+    return f"{prefix}_{table_ref}"
+
 def call_delete_procedure(conn, table):
-    proc_name = f'delete_dummy_{table}'
+    proc_name = _format_proc_name('delete_dummy', table)
     with conn.cursor() as cur:
         cur.execute(f"CALL {proc_name}();")
         logging.info(f"✅ Called {proc_name}()")

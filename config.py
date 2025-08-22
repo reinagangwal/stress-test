@@ -8,34 +8,18 @@ DB_CONFIG = {
     'password': 'reina123'
 }
 
+# Schema configuration - list of schemas to scan
+SCHEMAS_TO_SCAN = ['public','schema_2']  # Add your schemas here
+# Common schemas: 'public', 'staging', 'production', 'test', etc.
+# Note: 'information_schema' is typically read-only and should not be included
+
 # User requirements:
 
 TARGET_TABLE = None     # Set to a specific table name to test only that table and its relations. # Set to None to test all tables.
 BATCH_SIZE = 1000000     # Number of rows to insert per table
 RUN_PROCEDURE_GENERATOR = False  # Set True to (re)generate procedures
 RUN_STRESS_TEST = False         # Set True to run stress test
-RUN_CLEANUP = True            # Set True to clean up after test
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+RUN_CLEANUP = True           # Set True to clean up after test
 
 
 if __name__ == "__main__":
